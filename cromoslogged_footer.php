@@ -1,4 +1,4 @@
 <p>_________________________________________________________</p>
-<p>usuario desconocido</p>
+<p>has iniciado sesión</p>
     </body>
 </html>
