@@ -9,6 +9,6 @@
 	echo '<p>Bienvenido "' . $_SESSION["user"] . '" a la web</p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'user/main.php">Página usuario</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'index.php">Página principal</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'dologoff.php">Cerrar sesión</a></p>';
+	echo '<p><a href="' . CANNONICALROOTPATH.'dologout.php">Cerrar sesión</a></p>';
  ?>
  	<p>_________________________________________________________</p>

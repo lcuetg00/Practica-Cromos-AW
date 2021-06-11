@@ -1,0 +1,23 @@
+# Aplicaciones Web - Práctica 3 - Gestor de cromos
+
+## Componentes del grupo
+Luis Cueto Gómez-Morán
+César Bermejo Fernandez
+Miguel Ángel Cueto Gómez-Morán
+
+## Instalación
+Copiar el contenido del proyecto en la carpeta de distribución del servidor. No hace falta que los archivos se copien directamente en la raíz de la carpeta del servidor.
+En otros sistemas se podrán requerir pasos adicionales:
+### Linux
+Requisitos necesarios para la instalación:
+#### Permisos del archivo de datos de usuario
+Para que el servidor pueda acceder al archivo de datos de usuario ("Practica-Cromos-AW/dataFiles/userData") es indispensable asignarle (al archivo) los permisos de acceso correspondientes.
+Para averiguar el usuario bajo el que se ejecuta el servidor se puede utilizar la siguiente sentencia de terminal:
+	ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1;
+Para modificar los permisos de acceso y usuario del archivo bastará con estas dos sentencias:
+	chmod 755 "Practica-Cromos-AW/dataFiles/userData";
+	chown "usuario-servidor":"usuario-servidor" "Practica-Cromos-AW/dataFiles/userData";
+Sustituir en las líneas anteriores "usuario-servidor" y "Practica-Cromos-AW/dataFiles/userData" por los valores adecuados antes de ejecutarlas.
+
+### Windows
+No se han identificado requisitos adicionales por el momento.

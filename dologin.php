@@ -1,7 +1,6 @@
 <?php
-	define("CANNONICALROOTPATH", "./");
-	session_start();
-	if (count(get_included_files()) != 1) {
+	include "./dataFiles/filefunctions.php";
+	if (count(get_included_files()) != 2) {
 		header("location: ./index.php?error=fileCantBeIncluded");
 		exit();
 	}
@@ -9,6 +8,8 @@
 		header("location: ./index.php");
 		exit();
 	}
+	define("CANNONICALROOTPATH", "./");
+	session_start();
 
 	$user = $_POST["user"];
 	$password = $_POST["password"];
@@ -23,15 +24,23 @@
 		exit();
 	}
 
-	include "./dataFiles/filefunctions.php";
-	if (userPasswordExists($user, $password)) {
-		// Éxito -> registrar y redirigir
+	$adm = hasUserPasswordAdminRights($user, $password);
+	if ($adm === 0) {
+		// Error tipo userPasswordInvalid. No se informará del tipo de error (usuario y/o contraseña). Si el usuario está intentando suplantar a alguien, no queremos darle la pista de que el usuario existe o la contraseña es válida.
+		header("location: ./login.php?error=userPasswordInvalid");
+		exit();
+	} else if ($adm === 1) { // Éxito -> hacer sesión al usuario y redirigir
 		$_SESSION["user"] = $user;
-		//$_SESSION[""] = $; // BD datos
+		//$_SESSION["saldo"] = $; // BD datos
 		header("location: ./user/main.php");
 		exit();
+	} else if ($adm === 2) { // Éxito -> hacer sesión al administrador y redirigir
+		$_SESSION["user"] = $user;
+		$_SESSION["admin"] = true;
+		//$_SESSION["saldo"] = $; // BD datos
+		header("location: ./admin/main.php");
+		exit();
+	} else {
+		// Error ?
 	}
-	// Error tipo userPasswordInvalid. No se informará del tipo de error (usuario y/o contraseña). Si el usuario está intentando suplantar a alguien, no queremos darle la pista de que el usuario existe o la contraseña es válida.
-	header("location: ./login.php?error=userPasswordInvalid");
-	exit();
 ?>

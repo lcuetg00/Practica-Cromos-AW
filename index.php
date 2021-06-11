@@ -1,10 +1,21 @@
 <?php
-	session_start();
 	define("CANNONICALROOTPATH", "./");
+	include "./sessionManagement.php";
+
 	if (isset($_SESSION["user"])) {
-		include_once "./cromoslogged_header.php";
+		if (isset($_SESSION["admin"])) {
+			include "./cromosadmin_header.php";
+		} else {
+			include "./cromosuser_header.php";
+		}
 	} else {
-		include_once "./cromos_header.php";
+		include "./cromos_header.php";
+	}
+
+	if (isset($_GET["error"]) && ($_GET["error"] == "timeout")) {
+		echo '<script language="javascript">';
+		echo 'alert("Superado el periodo de inactividad. Sesión cerrada. Pulse aceptar para continuar.")';
+		echo '</script>';
 	}
 ?>
 
@@ -12,7 +23,11 @@
 
 <?php
 	if (isset($_SESSION["user"])) {
-		include_once "./cromoslogged_footer.php";
+		if (isset($_SESSION["admin"])) {
+			include_once "./cromosadmin_footer.php";
+		} else {
+			include_once "./cromosuser_footer.php";
+		}
 	} else {
 		include_once "./cromos_footer.php";
 	}

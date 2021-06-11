@@ -1,15 +1,17 @@
 <?php
-	session_start();
 	define("CANNONICALROOTPATH", "./../");
-	if (!isset($_SESSION["user"])) {
+	include "../sessionManagement.php";
+	if (!isset($_SESSION["user"]) ||
+			isset($_SESSION["admin"])) {
 		header("location: ../index.php");
 		exit();
 	}
-	include_once "../cromoslogged_header.php";
+
+	include "../cromosuser_header.php";
 ?>
 
 <p>Página principal del usuario</p>
 
 <?php
-	include_once "../cromoslogged_footer.php";
+	include "../cromosuser_footer.php";
 ?>

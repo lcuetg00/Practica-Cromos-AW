@@ -1,10 +1,12 @@
 <?php
-	session_start();
 	define("CANNONICALROOTPATH", "./");
+	include "./sessionManagement.php";
+
 	if (isset($_SESSION["user"])) {
 		header("location: ./index.php");
 		exit();
 	}
+
 	include_once "./cromos_header.php";
 ?>
 
