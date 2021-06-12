@@ -1,23 +1,70 @@
 # Aplicaciones Web - Práctica 3 - Gestor de cromos
 
 ## Componentes del grupo
+
 Luis Cueto Gómez-Morán
 César Bermejo Fernandez
 Miguel Ángel Cueto Gómez-Morán
 
 ## Instalación
-Copiar el contenido del proyecto en la carpeta de distribución del servidor. No hace falta que los archivos se copien directamente en la raíz de la carpeta del servidor.
-En otros sistemas se podrán requerir pasos adicionales:
-### Linux
-Requisitos necesarios para la instalación:
+
+Copiar el contenido del proyecto en la carpeta de distribución del servidor. No hace falta que los archivos se copien directamente en la raíz de la carpeta del servidor. Pasos adicionales:
+
++ Descargar la librería mysqli (ver "Instalar Mysqli", tutorial solo para Linux) y reiniciar el servidor.
++ Descargar la librería GD (ver "Instalar GD", tutorial solo para Linux).
++ Activar la librería GD (ver "Activar librerías GD", tutorial solo para Linux) y reiniciar el servidor.
++ Reescribir los valores de los campos "$user" y "$user" (usuario y contraseña de la instalación mysql) del método connectToDatabase del archivo "Practica-Cromos-AW/sqldatabase/conectarbd.php".
++ Importar la base de datos MySql (la carpeta "Practica-Cromos-AW/sqldatabase" incluye un fichero "cromos.sql" que genera las tablas. La base de datos "cromos" debe crearse manualmente antes de cargar el fichero).
++ Localizar el archivo php.ini del proyecto y modificarlo para incluir el uso de la librería gd2.dll (ver "Instalar Mysqli") y reiniciar el servidor.
++ Asignar permisos de usuario al archivos de datos de usuario "Practica-Cromos-AW/dataFiles/userData". En Linux este paso es indispensable (ver "Permisos del archivo de datos de usuario", tutorial solo para Linux).
+
+### Pasos adicionales: Linux
+
+#### Instalar php mysqli
+
+Desde el terminal descargamos el módulo mysqli para php y reiniciamos el servidor:
+
+	sudo apt-get install php-mysqli
+	sudo service apache2 restart
+
+Importante tener cargada la base de datos "cromos" con las tablas del archivo "Practica-Cromos-AW/sqldatabase/cromos.sql" y establecer la constraseña y el usuario del sistema mysql en el método connectToDatabase del archivo "./sqldatabase/conectarbd.php".
+
+#### Instalar GD
+
+Se puede descargar e instalar desde el terminal con la siguiente sentencia:
+
+	sudo apt-get install php-gd;
+
+En mi caso (uso Ubuntu 20.04) tuve que utilizar otro nombre de paquete ya que apt-get no encontraba un candidato para php-gd:
+
+	sudo apt-get install php7.4-gd;
+
+Intalar, por tanto, la versión de gd equivalente a la versión de php instalada.
+
+#### Activar librerías GD
+
+Para encontrar el fichero php.ini es necesario ejecutar la función phpinfo sin argumentos (phpinfo()) dentro de un bloque <?php ?>. Esto devolverá e imprimirá en la página una tabla con datos del proyecto. Buscando en la tabla por "Configuration File (php.ini) Path" (o algo similar) debería aparecer la ruta en la que se encuentra.
+
+Una vez localizado el archivo php.ini, se deberá modificar y guardar (es posible que requiera permisos de administrador) con las siguientes líneas al final del fichero:
+
+	[PHP_GD2]
+	extension=php_gd2.dll
+
+Tras terminar, reiniciar el servidor:
+
+	sudo service apache2 restart
+
 #### Permisos del archivo de datos de usuario
+
 Para que el servidor pueda acceder al archivo de datos de usuario ("Practica-Cromos-AW/dataFiles/userData") es indispensable asignarle (al archivo) los permisos de acceso correspondientes.
+
 Para averiguar el usuario bajo el que se ejecuta el servidor se puede utilizar la siguiente sentencia de terminal:
+
 	ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1;
+
 Para modificar los permisos de acceso y usuario del archivo bastará con estas dos sentencias:
+
 	chmod 755 "Practica-Cromos-AW/dataFiles/userData";
 	chown "usuario-servidor":"usuario-servidor" "Practica-Cromos-AW/dataFiles/userData";
-Sustituir en las líneas anteriores "usuario-servidor" y "Practica-Cromos-AW/dataFiles/userData" por los valores adecuados antes de ejecutarlas.
 
-### Windows
-No se han identificado requisitos adicionales por el momento.
+Sustituir en las líneas anteriores "usuario-servidor" y "Practica-Cromos-AW/dataFiles/userData" por los valores adecuados antes de ejecutarlas.

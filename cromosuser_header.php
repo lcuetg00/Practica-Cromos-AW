@@ -10,5 +10,7 @@
 	echo '<p><a href="' . CANNONICALROOTPATH.'user/main.php">Página usuario</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'index.php">Página principal</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'dologout.php">Cerrar sesión</a></p>';
+	echo '<p><a href="' . CANNONICALROOTPATH.'user/minigameResolveCaptcha.php">Minijuego - Resolver captcha</a></p>';
+	//echo '<p>Saldo actual: ' . $SESSION["saldo"] . '</p>'
  ?>
  	<p>_________________________________________________________</p>

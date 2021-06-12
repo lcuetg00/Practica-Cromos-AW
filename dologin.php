@@ -1,6 +1,8 @@
 <?php
+	include "./debugops.php";
 	include "./dataFiles/filefunctions.php";
-	if (count(get_included_files()) != 2) {
+	//include "./sqldatabase/conectarbd.php";
+	if (count(get_included_files()) != 3) {
 		header("location: ./index.php?error=fileCantBeIncluded");
 		exit();
 	}
@@ -30,6 +32,7 @@
 		header("location: ./login.php?error=userPasswordInvalid");
 		exit();
 	} else if ($adm === 1) { // Éxito -> hacer sesión al usuario y redirigir
+		//$db = connectToDatabase();
 		$_SESSION["user"] = $user;
 		//$_SESSION["saldo"] = $; // BD datos
 		header("location: ./user/main.php");
@@ -37,7 +40,6 @@
 	} else if ($adm === 2) { // Éxito -> hacer sesión al administrador y redirigir
 		$_SESSION["user"] = $user;
 		$_SESSION["admin"] = true;
-		//$_SESSION["saldo"] = $; // BD datos
 		header("location: ./admin/main.php");
 		exit();
 	} else {

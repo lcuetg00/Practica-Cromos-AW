@@ -1,10 +1,10 @@
 <?php
 
-
+include "./../debugops.php";
 
 function connectToDatabase() {
   $user = 'root'; //Esto es la url (una direccion ip)
-  $pass = '';
+  $pass = 'mysqlroot';
   $db = 'cromos';
   $mysqli = new mysqli('localhost', $user, $pass, $db) or die("No se puede conectar");
 
