@@ -15,12 +15,15 @@
 	}
 
 	// Requiere -> include "./dataFiles/filefunctions.php";
+	// Requiere -> include "./sqldatabase/conectarbd.php";
 	function deleteAndBuildDebugUserDataFile() {
 		clearAllUsers();
-		writeUser("admin", "admin", true);
-		writeUser("miguel", "1234aa", false);
-		writeUser("admin2", "admin", true);
-		writeUser("cesar", "aa1234", false);
-		writeUser("luis", "12aa34", false);
+		$db = connectToDatabase();
+		writeUser(					-1, "admin",	"admin",	true);
+		writeUser(insertarUsuario($db), "miguel",	"1234aa",	false);
+		writeUser(					-1, "admin2",	"admin",	true);
+		writeUser(insertarUsuario($db), "cesar",	"aa1234",	false);
+		writeUser(insertarUsuario($db), "luis",		"12aa34",	false);
+		closeConnection($db);
 	}
  ?>

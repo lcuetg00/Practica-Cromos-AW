@@ -1,3 +1,4 @@
+<!-- La página que incluya este fichero debe definir CANNONICALROOTPATH -->
 <?php
 
 function connectToDatabase() {
@@ -8,10 +9,8 @@ function connectToDatabase() {
 
  //Comprobamos si se conecta bien a la base de datos:
   if (mysqli_connect_errno()) {
-    echo "Error al conectarse a la base de datos";
-    echo "Errno: " . $mysqli->connect_errno . "\n";
-    echo "Error: " . $mysqli->connect_error . "\n";
-    exit();
+	  header("location: " .  CANNONICALROOTPATH."index.php?error=dbConnectionError");
+	  exit();
   }
  return $mysqli;
 }
@@ -31,11 +30,13 @@ define("COLUMNASALDOSOCIO","Saldo");
 
 function insertarUsuario($mysqli) {
   $sql = "INSERT INTO socio (IdSocio, Saldo) VALUES (null,0)";
+  /*
   if ($mysqli->query($sql) === TRUE) {
     echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
   }
+  */
   $sql = "SELECT * FROM socio ORDER BY IdSocio DESC";
   $result = $mysqli->query($sql);
   $row = $result->fetch_assoc();
@@ -45,7 +46,7 @@ function insertarUsuario($mysqli) {
 
 //Devuelve el saldo del usuario con el id insertado
 function recogerSaldoUsuario($mysqli,$idSocio) {
-  $sql = "SELECT Saldo FROM socio WHERE IdSocio = $idSocio";
+  $sql = "SELECT Saldo FROM socio WHERE IdSocio = ".$idSocio;
   $result = $mysqli->query($sql);
 
   $row = $result->fetch_assoc();
@@ -204,23 +205,5 @@ function recogerDatosCromos($mysqli) {
     echo json_encode($row['Nombre']);
   }
 }
-
-$mysqli = connectToDatabase();
-//recogerDatosAlbunes($mysqli);
-//recogerDatosCromos($mysqli);
-
-//$saldo = recogerSaldoUsuario($mysqli,2);
-//echo $saldo;
-//recogerSaldoUsuario($mysqli,3);
-//recogerImagenesCromos($mysqli);
-//recogerSaldoUsuario($mysqli,2);
-//actualizarSaldoUsuario($mysqli,2,30);
-//actualizarCantidadCromoUsuario($mysqli,2,1,3);
-//actualizarEstadoColeccion($mysqli,1,false);
-//$id = insertarUsuario($mysqli);
-//echo $id;
-
-echo "Funciona";
-
 
 ?>

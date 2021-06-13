@@ -1,45 +1,21 @@
 <?php
+	// Generación de la solución (el valor del captcha):
+	session_start();
+	$captcha = rand(1000, 9999);
+	$_SESSION["captcha"] = $captcha;
 
-// We start a session to access
-// the captcha externally!
-session_start();
+	// Generar imagen del captcha:
+	$im = imagecreatetruecolor(50, 24);
+	$bg = imagecolorallocate($im, 22, 86, 165); // Color azul
+	$fg = imagecolorallocate($im, 255, 255, 255); // Color blanco
+	imagefill($im, 0, 0, $bg);
+	imagestring($im, rand(1, 7), rand(1, 7), rand(1, 7),  $captcha, $fg);
 
-// Generate a random number
-// from 1000-9999
-$captcha = rand(1000, 9999);
+	// Prevenir almacenamiento en la caché:
+	header("Cache-Control: no-store, no-cache");
 
-// The capcha will be stored
-// for the session
-$_SESSION["captcha"] = $captcha;
-
-// Generate a 50x24 standard captcha image
-$im = imagecreatetruecolor(50, 24);
-
-// Blue color
-$bg = imagecolorallocate($im, 22, 86, 165);
-
-// White color
-$fg = imagecolorallocate($im, 255, 255, 255);
-
-// Give the image a blue background
-imagefill($im, 0, 0, $bg);
-
-// Print the captcha text in the image
-// with random position & size
-imagestring($im, rand(1, 7), rand(1, 7),
-            rand(1, 7),  $captcha, $fg);
-
-// VERY IMPORTANT: Prevent any Browser Cache!!
-header("Cache-Control: no-store,
-            no-cache, must-revalidate");
-
-// The PHP-file will be rendered as image
-header('Content-type: image/png');
-
-// Finally output the captcha as
-// PNG image the browser
-imagepng($im);
-
-// Free memory
-imagedestroy($im);
+	// Devolver imagen:
+	header('Content-type: image/png');
+	imagepng($im);
+	imagedestroy($im);
 ?>

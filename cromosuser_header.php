@@ -6,7 +6,7 @@
     </head>
     <body>
 <?php
-	echo '<p>Bienvenido "' . $_SESSION["user"] . '" a la web</p>';
+	echo '<p>Bienvenido "' . $_SESSION["user"] . '" a la web. Saldo actual: ' . $_SESSION["saldo"] . '</p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'user/main.php">Página usuario</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'index.php">Página principal</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'dologout.php">Cerrar sesión</a></p>';

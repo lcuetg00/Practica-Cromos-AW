@@ -1,8 +1,8 @@
 <?php
 	$timeExtension = 1800;
 	session_start();
-	// Mecanismo utilizado en usuarios que hayan iniciado sesión y que no sean administradores.
-	if (isset($_SESSION["user"]) && !isset($_SESSION["admin"])) {
+	// Mecanismo utilizado en usuarios que hayan iniciado sesión y que no sean administradores (tiene identificador como usuario de la base de datos).
+	if (isset($_SESSION["dbId"])) {
 		if (!isset($_SESSION["timeout"])) {
 			$_SESSION["timeout"] = $timeExtension + time();
 		} else if (time() > $_SESSION["timeout"]) {

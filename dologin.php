@@ -1,17 +1,13 @@
 <?php
+	define("CANNONICALROOTPATH", "./");
 	include "./debugops.php";
+	include "./sessionManagement.php";
 	include "./dataFiles/filefunctions.php";
-	//include "./sqldatabase/conectarbd.php";
-	if (count(get_included_files()) != 3) {
-		header("location: ./index.php?error=fileCantBeIncluded");
-		exit();
-	}
+	include "./sqldatabase/conectarbd.php";
 	if (isset($_SESSION["user"]) || !isset($_POST["submit"])) {
 		header("location: ./index.php");
 		exit();
 	}
-	define("CANNONICALROOTPATH", "./");
-	session_start();
 
 	$user = $_POST["user"];
 	$password = $_POST["password"];
@@ -26,23 +22,23 @@
 		exit();
 	}
 
-	$adm = hasUserPasswordAdminRights($user, $password);
-	if ($adm === 0) {
+	$userData = getUserDataByUserPassword($user, $password);
+	if (is_null($userData)) {
 		// Error tipo userPasswordInvalid. No se informará del tipo de error (usuario y/o contraseña). Si el usuario está intentando suplantar a alguien, no queremos darle la pista de que el usuario existe o la contraseña es válida.
 		header("location: ./login.php?error=userPasswordInvalid");
 		exit();
-	} else if ($adm === 1) { // Éxito -> hacer sesión al usuario y redirigir
-		//$db = connectToDatabase();
-		$_SESSION["user"] = $user;
-		//$_SESSION["saldo"] = $; // BD datos
-		header("location: ./user/main.php");
-		exit();
-	} else if ($adm === 2) { // Éxito -> hacer sesión al administrador y redirigir
-		$_SESSION["user"] = $user;
+	} else if ($userData[USERDATA_ISADMIN] == true) { // Hacer sesión al administrador y redirigir
+		$_SESSION["user"] = $userData[USERDATA_NAME];
 		$_SESSION["admin"] = true;
 		header("location: ./admin/main.php");
 		exit();
-	} else {
-		// Error ?
+	} else { // Hacer sesión al usuario y redirigir
+		$db = connectToDatabase();
+		$_SESSION["dbId"] = $userData[USERDATA_DBID];
+		$_SESSION["user"] = $user;
+		$_SESSION["saldo"] = recogerSaldoUsuario($db, $userData[USERDATA_DBID]);
+		closeConnection($db);
+		header("location: ./user/main.php");
+		exit();
 	}
 ?>

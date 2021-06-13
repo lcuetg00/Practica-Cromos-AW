@@ -1,25 +1,28 @@
 <?php
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
-	if (!isset($_SESSION["user"]) ||
-			isset($_SESSION["admin"])) {
+	include "../sqldatabase/conectarbd.php";
+	include_once "./../debugops.php";
+
+	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
 		exit();
 	}
-
 	include "../cromosuser_header.php";
 
-
-	$msg = '';
-
-	// If user has given a captcha!
-	if (isset($_POST['input']) && sizeof($_POST['input']) > 0)
-
-	    // If the captcha is valid
-	    if ($_POST['input'] == $_SESSION['captcha'])
-	        $msg = '<span style="color:green">SUCCESSFUL!!!</span>';
-	    else
-	        $msg = '<span style="color:red">CAPTCHA FAILED!!!</span>';
+	if (isset($_POST['input'])) {
+	    if ($_POST['input'] == $_SESSION['captcha']) {
+			$_SESSION["saldo"] = $_SESSION["saldo"]+20;
+	        $msg = '<span style="color:green">Has acertado!</span><p>Añadidos 20 créditos de saldo</p><p>Saldo actual: ' . $_SESSION["saldo"] .'</p>';
+			$db = connectToDatabase();
+			actualizarSaldoUsuario($db, $_SESSION["dbId"], $_SESSION["saldo"]);
+			closeConnection($db);
+	    } else {
+	        $msg = '<span style="color:red">Respuesta incorrecta</span><p>Saldo actual: ' . $_SESSION["saldo"] .'</p>';
+		}
+	} else {
+		$msg = "";
+	}
 ?>
 
     <h2>Resuelve el captcha</h2>
@@ -32,7 +35,7 @@
             " <?php echo $_SERVER['PHP_SELF']; ?>">
         <input type="text" name="input"/>
         <input type="hidden" name="flag" value="1"/>
-        <input type="submit" value="Submit" name="submit"/>
+        <input type="submit" value="Resolver" name="submit"/>
     </form>
 
     <div style='margin-bottom:5px'>

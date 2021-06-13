@@ -18,9 +18,9 @@ Copiar el contenido del proyecto en la carpeta de distribución del servidor. No
 + Localizar el archivo php.ini del proyecto y modificarlo para incluir el uso de la librería gd2.dll (ver "Instalar Mysqli") y reiniciar el servidor.
 + Asignar permisos de usuario al archivos de datos de usuario "Practica-Cromos-AW/dataFiles/userData". En Linux este paso es indispensable (ver "Permisos del archivo de datos de usuario", tutorial solo para Linux).
 
-### Pasos adicionales: Linux
+## Pasos adicionales: Linux
 
-#### Instalar php mysqli
+### Instalar php mysqli
 
 Desde el terminal descargamos el módulo mysqli para php y reiniciamos el servidor:
 
@@ -29,7 +29,7 @@ Desde el terminal descargamos el módulo mysqli para php y reiniciamos el servid
 
 Importante tener cargada la base de datos "cromos" con las tablas del archivo "Practica-Cromos-AW/sqldatabase/cromos.sql" y establecer la constraseña y el usuario del sistema mysql en el método connectToDatabase del archivo "./sqldatabase/conectarbd.php".
 
-#### Instalar GD
+### Instalar GD
 
 Se puede descargar e instalar desde el terminal con la siguiente sentencia:
 
@@ -39,9 +39,9 @@ En mi caso (uso Ubuntu 20.04) tuve que utilizar otro nombre de paquete ya que ap
 
 	sudo apt-get install php7.4-gd;
 
-Intalar, por tanto, la versión de gd equivalente a la versión de php instalada.
+Instalar, por tanto, la versión de gd equivalente a la versión de php instalada si la primera opción no funciona.
 
-#### Activar librerías GD
+### Activar librerías GD
 
 Para encontrar el fichero php.ini es necesario ejecutar la función phpinfo sin argumentos (phpinfo()) dentro de un bloque <?php ?>. Esto devolverá e imprimirá en la página una tabla con datos del proyecto. Buscando en la tabla por "Configuration File (php.ini) Path" (o algo similar) debería aparecer la ruta en la que se encuentra.
 
@@ -54,7 +54,7 @@ Tras terminar, reiniciar el servidor:
 
 	sudo service apache2 restart
 
-#### Permisos del archivo de datos de usuario
+### Permisos del archivo de datos de usuario
 
 Para que el servidor pueda acceder al archivo de datos de usuario ("Practica-Cromos-AW/dataFiles/userData") es indispensable asignarle (al archivo) los permisos de acceso correspondientes.
 

@@ -1,15 +1,12 @@
 <?php
+	define("CANNONICALROOTPATH", "./");
+	include "./sessionManagement.php";
 	include "./dataFiles/filefunctions.php";
-	if (count(get_included_files()) != 2) {
-		header("location: ./index.php?error=fileCantBeIncluded");
-		exit();
-	}
+	include "./sqldatabase/conectarbd.php";
 	if (isset($_SESSION["user"]) || !isset($_POST["submit"])) {
 		header("location: ./index.php");
 		exit();
 	}
-	define("CANNONICALROOTPATH", "./");
-	session_start();
 
 	$user = $_POST["user"];
 	$password = $_POST["password"];
@@ -45,15 +42,19 @@
 		exit();
 	}
 
-	if (userExists($user)) {
+	if (findUserIndex($user) != -1) {
 		header("location: ./signup.php?error=userAlreadyExists");
 		exit();
 	}
 
 	// Éxito -> registrar y redirigir
-	writeUser($user, $password, false);
+	$db = connectToDatabase();
+	$dbId = insertarUsuario($db); // Insertar nuevo usuario en la bd.
+	writeUser($dbId, $user, $password, false); // Escribir datos de usuario en el fichero de datos de usuarios.
+	$_SESSION["dbId"] = $dbId; // Iniciar sesión con el usuario.
 	$_SESSION["user"] = $user;
 	$_SESSION["saldo"] = 0;
+	closeConnection($db);
 	header("location: ./user/main.php");
 	exit();
 ?>

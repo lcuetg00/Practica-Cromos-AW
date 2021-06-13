@@ -1,8 +1,7 @@
 <?php
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
-	if (!isset($_SESSION["user"]) ||
-			isset($_SESSION["admin"])) {
+	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
 		exit();
 	}
