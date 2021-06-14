@@ -1,10 +1,3 @@
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
     <?php
 	    define("CANNONICALROOTPATH", "./");
 	    include "./sessionManagement.php";
@@ -42,7 +35,12 @@
               </div>
 
               <div class="container">
-                <button type="button" style="float: right;" class="volverbtn"> Volver </button>
+                <button type="button" style="float: right;" class="volverbtn" onclick="goBack()"> Volver </button>
+				<script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
               </div>
               <br><br><br>
             </form>
@@ -75,6 +73,3 @@
     <?php
 	    include_once "cromos_footer.php"
     ?> 
-</body>
-
-</html>

@@ -1,4 +1,4 @@
-<p>_________________________________________________________</p>
-<p>usuario desconocido</p>
-    </body>
+		<p class="b">___________________________</p>
+		<p>Usuario Desconocido</p>
+	</body>
 </html>

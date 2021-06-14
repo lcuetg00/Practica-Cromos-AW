@@ -1,13 +1,4 @@
-﻿<html>
-
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="style.css">
-    </head>
-
-    <body>
-      
-        <?php
+﻿        <?php
 	        define("CANNONICALROOTPATH", "./");
 	        include "./sessionManagement.php";
 
@@ -40,19 +31,17 @@
               </div>
 
               <div class="container">
-                <button type="button" class="volverbtn"> Volver </button>
-                <span class="greentxt">¿No tienes cuenta?   <a href="#"> Registrarse </a></span>
+                <button type="button" class="volverbtn" onclick="goBack()"> Volver </button>
+                <script>
+                    function goBack() {
+                        window.history.back();
+                    }
+                </script>
                 <!-- <span class="psw">¿Has olvidado la <a href="#">contraseña</a>?</span> --> 
               </div>
               <?php
 		        if (isset($_GET["error"])) {
 			        switch ($_GET["error"]) {
-				        case "userNotSet";
-					        echo "<p>El campo usuario está incompleto</p>";
-				        break;
-				        case "passwordNotSet";
-					        echo "<p>El campo contraseña está incompleto</p>";
-				        break;
 				        case "userPasswordInvalid";
 					        echo "<p class='p'>El usuario y/o la contraseña no existen en la base de datos</p>";
 				        break;
@@ -66,7 +55,3 @@
         <?php
 	        include_once "./cromos_footer.php"
         ?>
-    </body>
-
-</html>
-

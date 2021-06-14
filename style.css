@@ -160,7 +160,11 @@ c.c3{
 }
 
 p{
-    float: right;
     font-family: "Lucida Console", "Courier New", monospace;
     color: #00997a;
+    font-size: 14px;
+}
+
+p.b{
+    color: black;
 }
