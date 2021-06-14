@@ -158,3 +158,9 @@ c.c2{
 c.c3{
     margin: -8px;
 }
+
+p{
+    float: right;
+    font-family: "Lucida Console", "Courier New", monospace;
+    color: #00997a;
+}
