@@ -28,6 +28,12 @@ Copiar el contenido del proyecto en la carpeta de distribución del servidor. No
 + Localizar el archivo php.ini del proyecto y modificarlo para incluir el uso de la librería gd2.dll (ver "Instalar Mysqli") y reiniciar el servidor.
 + Asignar permisos de usuario al archivos de datos de usuario "Practica-Cromos-AW/dataFiles/userData". En Linux este paso es indispensable (ver "Permisos del archivo de datos de usuario", tutorial solo para Linux) para poder registrar usuarios.
 
+## Pasos adicionales: general
+
+### Importar base de datos: solución del error "Collation desconocida: 'utf8mb4_0900_ai_ci'".
+
+Al intertar importar la base de datos con varias aplicaciones puede saltar un error de formato de caracteres. Buscando en Internet (https://www.freakyjolly.com/resolved-when-i-faced-1273-unknown-collation-utf8mb4_0900_ai_ci-error/) encontré que la solución es reemplazar cada ocurrencia de la cadena de texto 'utf8mb4_0900_ai_ci' por la cadena de texto 'utf8mb4_general_ci' en el archivo .sql que crea la base de datos.
+
 ## Pasos adicionales: Linux
 
 ### Instalar php mysqli
