@@ -3,17 +3,31 @@
 <!DOCTYPE html>
 <html>
     <head>
-    </head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="<?php echo CANNONICALROOTPATH; ?>style.css">
+	</head>
     <body>
-<?php
-	echo '<p>Bienvenido "' . $_SESSION["user"] . '" a la web. Saldo actual: ' . $_SESSION["saldo"] . '</p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'user/main.php">Página usuario</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'index.php">Página principal</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'dologout.php">Cerrar sesión</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'user/minigameResolveCaptcha.php">Minijuego - Resolver captcha</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'user/minigameAnswerQuestions.php">Minijuego - Responder pregunta</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'user/verColeccion.php">Ver Colección</a></p>';
-  echo '<p><a href="' . CANNONICALROOTPATH.'user/comprarCromos.php">Comprar Cromos</a></p>';
-  echo '<p><a href="' . CANNONICALROOTPATH.'user/comprarAlbum.php">Comprar Album</a></p>';
- ?>
- 	<p>_________________________________________________________</p>
+		<header class="header">
+			<div class="headerLogo">
+				<img width="30" height="30" class="logo" src="<?php echo CANNONICALROOTPATH; ?>img/avatar.png" alt="logo"></img>
+			</div>
+			<nav>
+				<ul class="headerLinks">
+					<li><a href="<?php echo CANNONICALROOTPATH; ?>index.php">Inicio</a></li>
+					<li><a href="<?php echo CANNONICALROOTPATH; ?>productos.php">Productos</a></li>
+					<li><a href="<?php echo CANNONICALROOTPATH; ?>eventos.php">Eventos</a></li>
+				</ul>
+			</nav>
+			<div class="headerButtons">
+				<a class="cta" href="<?php echo CANNONICALROOTPATH; ?>user/main.php"><button>Página principal</button></a>
+				<a class="cta" href="<?php echo CANNONICALROOTPATH; ?>dologout.php"><button class="flashyButton">Cerrar sesión</button></a>
+			</div>
+		</header>
+		<header class="subHeader">
+			<div class="vContainerCenteredContents"><div>Usuario: "<?php echo $_SESSION["user"] ?>"</div><div>Saldo: <?php echo $_SESSION["saldo"] ?></div></div>
+			<ul class="headerLinks">
+				<li><a href="<?php echo CANNONICALROOTPATH; ?>user/comprar.php">Comprar</a></li>
+				<li><a href="<?php echo CANNONICALROOTPATH; ?>user/verColeccion.php">Colección</a></li>
+				<li><a href="<?php echo CANNONICALROOTPATH; ?>user/minigames.php">Minijuegos</a></li>
+			</ul>
+		</header>

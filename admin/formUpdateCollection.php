@@ -13,7 +13,7 @@
 	if (isset($_POST["submit"])) {
 		$db = connectToDatabase();
 		for ($i = 0; $i < $_POST["numCromos"]; $i++) {
-			actualizarCromoDisponiblesTienda($db, $_POST["id" . $i], $_POST["uds" . $i]);
+			actualizarCromoDisponibleTienda($db, $_POST["id" . $i], $_POST["uds" . $i]);
 		}
 		closeConnection($db);
 		unset($_POST);
@@ -40,7 +40,7 @@
 	} else {
 		// El administrador podrá editar la colección previamente seleccionada.
 		$db = connectToDatabase();
-		$result = recogerCromosColeccion($mysqli,$_GET["collection"]);
+		$result = recogerCromosColeccion($db,$_GET["collection"]);
 		$numCromos = 0;
 		$htmlCromos = "";
 		while($rowitem = mysqli_fetch_array($result)) {
@@ -65,7 +65,6 @@
 			<div id="divCromos">' . $htmlCromos . '</div>
 			<input type="submit" name="submit"></input>
 		</form>';
-
 		closeConnection($db);
 	}
 

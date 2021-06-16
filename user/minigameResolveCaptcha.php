@@ -2,13 +2,12 @@
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
 	include "../sqldatabase/conectarbd.php";
-	include_once "./../debugops.php";
+	//include_once "./../debugops.php";
 
 	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
 		exit();
 	}
-	include "../cromosuser_header.php";
 
 	if (isset($_POST['input'])) {
 	    if ($_POST['input'] == $_SESSION['captcha']) {
@@ -23,25 +22,28 @@
 	} else {
 		$msg = "";
 	}
+
+	include "../cromosuser_header.php";
 ?>
 
-    <h2>Resuelve el captcha</h2>
+<div class="content">
+	<div class="vContainerCenteredContents">
+	    <h3>Resuelve el captcha</h3>
+	    <div>
+	        <img width="15%" height="15%" style="margin-top: 15px;" src="./captchaGenerator/captcha.php">
+	    </div>
 
-    <div style='margin:15px'>
-        <img src="./captchaGenerator/captcha.php">
-    </div>
+	    <form method="POST" action=" <?php echo $_SERVER['PHP_SELF']; ?>">
+	        <input type="text" name="input" style="width: 80px;"/></input></br>
+	        <input type="hidden" name="flag" value="1"/></input>
+	        <input type="submit" value="Resolver" name="submit"/></input>
+	    </form>
 
-    <form method="POST" action=
-            " <?php echo $_SERVER['PHP_SELF']; ?>">
-        <input type="text" name="input"/>
-        <input type="hidden" name="flag" value="1"/>
-        <input type="submit" value="Resolver" name="submit"/>
-    </form>
-
-    <div style='margin-bottom:5px'>
-        <?php echo $msg; ?>
-    </div>
-
+	    <div style='margin-top:15px'>
+	        <?php echo $msg; ?>
+	    </div>
+	</div>
+</div>
 <?php
 	include "../cromosuser_footer.php";
 ?>

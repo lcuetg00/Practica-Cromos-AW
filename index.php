@@ -1,6 +1,6 @@
 <?php
 	define("CANNONICALROOTPATH", "./");
-		include "./debugops.php";
+		//include "./debugops.php";
 	include "./sessionManagement.php";
 		include "./dataFiles/filefunctions.php";
 		include "./sqldatabase/conectarbd.php";
@@ -25,7 +25,28 @@
 	}
 ?>
 
-<p>Contenido de la página índice</p>
+
+<div class="content">
+	<div class="vContainerCenteredContents">
+		<h1>Bienvenido a TodoCromos.com</h1>
+		<div style="padding:30px 0"></div>
+		<div class="vContainerCenteredContents">
+			<h2>2021-06-22: Novedades</h2>
+			<p>Celebración de un <a class="href" href="./eventos.php">nuevo torneo</a>.</p>
+		</div>
+		<div style="padding:20px 0"></div>
+		<div class="vContainerCenteredContents">
+			<h2>2021-06-18: Novedades</h2>
+			<p>Presentación de las nuevas colecciones.</p>
+		</div>
+		<div style="padding:20px 0"></div>
+		<div class="vContainerCenteredContents">
+			<h2>2021-06-16: Novedades</h2>
+			<p>Apertura de la página web.</p>
+		</div>
+		<div style="padding:20px 0"></div>
+	</div>
+</div>
 
 <?php
 	if (isset($_SESSION["dbId"])) {

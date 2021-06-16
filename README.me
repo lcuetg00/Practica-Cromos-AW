@@ -14,9 +14,9 @@ Copiar el contenido del proyecto en la carpeta de distribución del servidor. No
 + Descargar la librería GD (ver "Instalar GD", tutorial solo para Linux).
 + Activar la librería GD (ver "Activar librerías GD", tutorial solo para Linux) y reiniciar el servidor.
 + Reescribir los valores de los campos "$user" y "$user" (usuario y contraseña de la instalación mysql) del método connectToDatabase del archivo "Practica-Cromos-AW/sqldatabase/conectarbd.php".
-+ Importar la base de datos MySql (la carpeta "Practica-Cromos-AW/sqldatabase" incluye un fichero "cromos.sql" que genera las tablas. La base de datos "cromos" debe crearse manualmente antes de cargar el fichero).
++ Importar la base de datos MySql (la carpeta "Practica-Cromos-AW/sqldatabase" incluye un fichero que genera la base de datos con todas sus tablas.
 + Localizar el archivo php.ini del proyecto y modificarlo para incluir el uso de la librería gd2.dll (ver "Instalar Mysqli") y reiniciar el servidor.
-+ Asignar permisos de usuario al archivos de datos de usuario "Practica-Cromos-AW/dataFiles/userData". En Linux este paso es indispensable (ver "Permisos del archivo de datos de usuario", tutorial solo para Linux).
++ Asignar permisos de usuario al archivos de datos de usuario "Practica-Cromos-AW/dataFiles/userData". En Linux este paso es indispensable (ver "Permisos del archivo de datos de usuario", tutorial solo para Linux) para poder registrar usuarios.
 
 ## Pasos adicionales: Linux
 
@@ -56,7 +56,7 @@ Tras terminar, reiniciar el servidor:
 
 ### Permisos del archivo de datos de usuario
 
-Para que el servidor pueda acceder al archivo de datos de usuario ("Practica-Cromos-AW/dataFiles/userData") es indispensable asignarle (al archivo) los permisos de acceso correspondientes.
+Para que el servidor pueda modificar el archivo de datos de usuario ("Practica-Cromos-AW/dataFiles/userData") es indispensable asignarle (al archivo) los permisos de acceso correspondientes.
 
 Para averiguar el usuario bajo el que se ejecuta el servidor se puede utilizar la siguiente sentencia de terminal:
 

@@ -2,7 +2,7 @@
 
 define("DBDB", "cromos");
 define("DBUSER", "root");
-define("DBPASSWORD", "");
+define("DBPASSWORD", "mysqlroot");
 
 
 define("COLUMNAIDSOCIO","IdSocio");
@@ -36,7 +36,6 @@ function insertarAlbum($mysqli, $nombreAlbum, $precio, $idColeccion) { // Return
   $sql = "INSERT INTO album(IdAlbum, Nombre, Precio, IdColeccion) VALUES (null,$nombreAlbum,$precio,$idColeccion)";
   $mysqli->query($sql);
 }
-
 function insertarUsuario($mysqli) { // Returns: IdSocio del socio insertado.
   $sql = "INSERT INTO socio (IdSocio, Saldo) VALUES (null,0)";
   $mysqli->query($sql);
@@ -45,15 +44,12 @@ function insertarUsuario($mysqli) { // Returns: IdSocio del socio insertado.
   $row = $result->fetch_assoc();
   return $row[COLUMNAIDSOCIO];
 }
-
-function insertarColeccion($nombreColeccion, $nombres, $precios, $cantidades, $imagenes) {
-	$mysqli = connectToDatabase();
+function insertarColeccion($mysqli, $nombreColeccion, $nombres, $precios, $cantidades, $imagenes) {
     $sql = "INSERT INTO coleccion(IdColeccion, Estado,Nombre) VALUES (null,'Activo','$nombreColeccion')";
     if ($mysqli->query($sql) === TRUE) { //recogemos el id nuevo para asignarle los cromos
       $result = $mysqli->query("SELECT * FROM coleccion ORDER BY IdColeccion DESC");
       $row = $result->fetch_assoc();
       $idColeccion = $row[COLUMNAIDCOLECCION];
-	  closeConnection($mysqli);
 	  $db = new PDO("mysql:host=localhost;dbname=cromos", DBUSER, DBPASSWORD);
       for($i=0;$i<count($nombres);$i++) {
 		  $stmt = $db->prepare("INSERT INTO cromo(IdCromo, Nombre,UnidadesDisponibles,Imagen,Precio,IdColeccion) VALUES (null,?,?,?,?,?)");
@@ -66,8 +62,12 @@ function insertarColeccion($nombreColeccion, $nombres, $precios, $cantidades, $i
       }
     } else {
       echo "Error: " . $sql . "<br>" . $mysqli->error;
-	  closeConnection($mysqli);
     }
+	return $idColeccion;
+}
+function insertarColeccionAlbum($mysqli, $nombreColeccion, $nombres, $precios, $cantidades, $imagenes, $precioAlbum) {
+	$idColeccion = insertarColeccion($mysqli, $nombreColeccion, $nombres, $precios, $cantidades, $imagenes);
+	insertarAlbum($mysqli, "Album ".$nombreColeccion, $precioAlbum, $idColeccion);
 }
 function tomarNombresIdsColecciones($mysqli) { // Returns: Array ("nombres" => Array con los nombres, "ids" => Array con los ids, "length" => Int numero de elementos totales)
   $sql = "SELECT * FROM coleccion";
@@ -91,8 +91,6 @@ function tomarNombresIdsColecciones($mysqli) { // Returns: Array ("nombres" => A
   return array("nombres" => $nombres, "ids" => $ids, "length" => $i);
 }
 
-
-
 function tomarNombresIdsColeccionesDisponibles($mysqli) {
   $sql = "SELECT * FROM coleccion WHERE IdColeccion IN (SELECT IdColeccion FROM cromo WHERE UnidadesDisponibles>0)";
   $result = $mysqli->query($sql);
@@ -114,25 +112,6 @@ function tomarNombresIdsColeccionesDisponibles($mysqli) {
   }
   return array("nombres" => $nombres, "ids" => $ids, "length" => $i);
 }
-
-//function tomarNombresIdsColeccionesDisponibles($mysqli) { // Returns: Array ("nombres" => Array con los nombres, "ids" => Array con los ids)
-//  $result = $mysqli->query($sql);
-
-//	$data = tomarNombresIdsColecciones($mysqli);
-//	$tNames = $data["nombres"];
-//	$tIds = $data["ids"];
-//    $ns = array();
-//    $is = array();
-//	$j = 0;
-//	for ($i = 0; $i < $data["length"]; $i++) {
-//		if (true) { // Solo si la colección con id $ids[$i] tiene cartas por vender,
-//	  	    $ns[$j] = $tNames[$i];
-//	  	    $is[$j] = $tIds[$i];
-//			$j++;
-//		}
-//	}
-//    return array("nombres" => $ns, "ids" => $is, "length" => $j);
-//}
 
 function recogerSaldoUsuario($mysqli,$idSocio) {  // Returns: Saldo del usuario.
   $sql = "SELECT Saldo FROM socio WHERE IdSocio = $idSocio";
@@ -166,7 +145,11 @@ function coleccionDisponeDeCromos($mysqli,$idColeccion) { // Returns: true si la
   return false;
 }
 
-function actualizarCromoDisponiblesTienda($mysqli,$idCromo) {
+function actualizarCromoDisponibleTienda($mysqli,$idCromo,$uds) {
+  $sql = "UPDATE cromo SET UnidadesDisponibles=$uds WHERE IdCromo = $idCromo";
+  $mysqli->query($sql);
+}
+function disminuirUnaUnidadCromoDisponibleTienda($mysqli,$idCromo) {
   $sql = "UPDATE cromo SET UnidadesDisponibles=UnidadesDisponibles-1 WHERE IdCromo = $idCromo";
   $mysqli->query($sql);
 }
@@ -195,34 +178,6 @@ function comprarAlbumUsuario($mysqli,$idSocio,$idAlbum) {
   $mysqli->query($sql);
 }
 
-/*
-function actualizarEstadoColeccion($mysqli,$idColeccion,$estado) {
-  if($estado==true) {
-    $sql = "UPDATE coleccion SET Estado='Activo' WHERE IdColeccion = $idColeccion";
-  } else {
-    $sql = "UPDATE coleccion SET Estado='Inactivo' WHERE IdColeccion = $idColeccion";
-  }
-  if ($mysqli->query($sql) === TRUE) {
-    echo "Actualizado Correctamente";
-  } else {
-    echo "Error al actualizar: " . $mysqli->error;
-  }
-}
-*/
-
-//function recogerDatosAlbunes($mysqli) { //Metodo para consultar los albunes (prueba)
-//  $sql = "SELECT * FROM album";
-//  $result = $mysqli->query($sql);
-
-// while ($row = $result->fetch_assoc()) {
-//   foreach($row as $key => $value){
-//      echo $key . " " . $value .";";
-//    }
-//    echo "<br>";
-// }
-//}
-
-
 function recogerIndiceInicialCromoColeccion($mysqli, $idColeccion) {
   $sql = "SELECT * FROM cromo WHERE IdColeccion=$idColeccion ORDER BY IdCromo ASC";
   $result = $mysqli->query($sql);
@@ -240,7 +195,7 @@ function recogerNumeroCromosColeccion($mysqli, $idColeccion) {
 function recogerEstadoColeccion($mysqli, $idColeccion, $idSocio) {
   $numeroCromosColeccion = recogerNumeroCromosColeccion($mysqli, $idColeccion);
 
-  $sql = "SELECT * FROM poseecromo WHERE IdSocio=$idSocio";
+  $sql = "SELECT * FROM poseecromo WHERE IdSocio=$idSocio AND IdCromo IN (SELECT IdCromo FROM cromo WHERE IdColeccion=$idColeccion)";
   $resultadoSocio = $mysqli->query($sql);
   $numeroCromosSocio = $resultadoSocio->num_rows;
 
@@ -254,22 +209,6 @@ function recogerEstadoColeccion($mysqli, $idColeccion, $idSocio) {
     return "Completada";
   }
 }
-
-//Esto es una funcion de prueba. Recojo una imagen de la base
-//de datos y la muestro (probado con una unica entrada en la base de datos)
-//function recogerImagenesCromos($mysqli) {
-  //$sql = "SELECT * FROM cromo";
-  //$result = $mysqli->query($sql);
-  //$numLineas = $result->num_rows;
-
-  //while ($row = $result->fetch_assoc()) {
-    //$imageDataString = base64_encode($row['Imagen']);
-    //$image = base64_decode($imageDataString);
-  //}
-  //header("content-type: image/jpeg");
-
-//  echo $image;
-//}
 
 function recogerDatosColecciones($mysqli) {
   $sql = "SELECT * FROM coleccion";
@@ -316,7 +255,7 @@ function usuarioTieneAlbum($mysqli,$idSocio,$idColeccion) {
   }
 }
 
-  function usuarioTieneAlbumConId($mysqli,$idSocio,$idAlbum) {
+function usuarioTieneAlbumConId($mysqli,$idSocio,$idAlbum) {
   $sqlBuscarAlbum = "SELECT * FROM poseealbum WHERE IdSocio=$idSocio AND IdAlbum=$idAlbum";
   $result2 = $mysqli->query($sqlBuscarAlbum);
   $numLineas = $result2->num_rows;
@@ -364,8 +303,3 @@ function recogerCromosUsuarioColeccion($mysqli,$idSocio,$idColeccion) {
   $result = $mysqli->query($sql);
   return $result;
 }
-
-
-
-
-$mysqli = connectToDatabase();

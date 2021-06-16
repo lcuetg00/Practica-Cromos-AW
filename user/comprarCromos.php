@@ -2,7 +2,7 @@
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
 	include "../sqldatabase/conectarbd.php";
-	include_once "./../debugops.php";
+	//include_once "./../debugops.php";
 
 	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
@@ -10,6 +10,8 @@
 	}
 	include "../cromosuser_header.php";
 
+		echo '<div class="content"><div class="vContainerCenteredContents">';
+	$mysqli = connectToDatabase();
 	if (isset($_POST['input'])) {
 		$input = substr($_POST['input'],0,3);
 		$value = substr($_POST['input'],3,strlen($_POST['input']));
@@ -26,19 +28,27 @@
 				if($dineroSocio>$precioCromo) {
 					$_SESSION["saldo"] = $dineroSocio-$precioCromo;
 					actualizarSaldoUsuario($mysqli,$_SESSION["dbId"],$_SESSION["saldo"]);
-					actualizarCromoDisponiblesTienda($mysqli,$idCromo);
+					disminuirUnaUnidadCromoDisponibleTienda($mysqli,$idCromo);
 					comprarCromoUsuario($mysqli,$_SESSION["dbId"],$idCromo);
-					echo "<script type='text/javascript'>alert('Se ha comprado el cromo');</script>";
+					unset($_POST);
+					header("location: ./comprar.php?status=cromoExitoCompra");
+					exit();
 				} else {
-					echo "<script type='text/javascript'>alert('No tienes puntos suficiente para comprar el cromo');</script>";
+					unset($_POST);
+					header("location: ./comprar.php?status=cromoSaldoInsuf");
+					exit();
 				}
 			} else {
-				echo "No tienes el album de la colección, compra el album para poder guardar los cromos";
+				unset($_POST);
+				header("location: ./comprar.php?status=cromoNoAlbum");
+				exit();
 			}
 		}
 	} else {
 		mostrarColeccionesActivas($mysqli);
 	}
+	closeConnection($mysqli);
+	echo '</div></div>'
 ?>
 
 
@@ -50,17 +60,14 @@
 
 	function mostrarColeccionesActivas($mysqli) {
 	  $arrayNombresIds = tomarNombresIdsColeccionesDisponibles($mysqli);
+	  echo '<h3>Comprar cromos</h3>';
 	  echo '<table id="tableColeccion" border="1">';
-	  echo "<tr>";
-	  echo "<td>Nombre</td>";
-	  echo "<td></td>";
-	  echo "<tr>";
 	  for($i=0;$i<$arrayNombresIds['length'];$i++) {
 			echo "<tr>";
-	    echo "<td>" . $arrayNombresIds['nombres'][$i] . "</td>";
+	    echo "<td>Cromos " . $arrayNombresIds['nombres'][$i] . "</td>";
 	    echo "<td>";
 			echo "<form method=POST action=" . $_SERVER['PHP_SELF'] .">";
-			echo "<input hidden type=text name=input value=". "Col" . $arrayNombresIds['ids'][$i] .">";
+			echo "<input type=hidden name=input value=". "Col" . $arrayNombresIds['ids'][$i] .">";
 			echo "<input type=hidden name= flag value=1 >";
 			echo "<input type=submit value=Comprar name=submit />";
 			echo "</form>";
@@ -84,16 +91,16 @@
 	    echo "<tr>";
 	    echo "<td>" . $rowitem[COLUMNANOMBRE] . "</td>";
 	    echo "<td>" . $rowitem[COLUMNAUNIDADESDISPONIBLES] . "</td>";
-	    echo "<td>" . $rowitem['Precio'] . "</td>";
+	    echo "<td>" . $rowitem['Precio'] . " puntos</td>";
 	    $image = $rowitem['Imagen'];
 	    echo"<td>";
 	      echo '<img width="150" height="210" src="data:image/jpg;base64,' . base64_encode( $image ) . '" />';
 	    echo"</td>";
 			echo "<td>";
 			echo "<form method=POST action=" . $_SERVER['PHP_SELF'] .">";
-			echo "<input hidden type=text name=input value=". "Cro" . $rowitem[COLUMNAIDCROMO] ."-" . $idColeccion .">";
-			echo "<input type=hidden name= flag value=1 >";
-			echo "<input type=submit value=Comprar name=submit />";
+			echo "<input type=hidden name=input value=". "Cro" . $rowitem[COLUMNAIDCROMO] ."-" . $idColeccion ."></input>";
+			echo "<input type=hidden name= flag value=1 ></input>";
+			echo "<input type=submit value=Comprar name=submit /></input>";
 			echo "</form>";
 			echo "</td>";
 	    echo "</tr>";

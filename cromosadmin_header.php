@@ -8,7 +8,8 @@
 <?php
 	echo '<p>Bienvenido "' . $_SESSION["user"] . '" a la página de administración</p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'admin/main.php">Página administrador</a></p>';
-	echo '<p><a href="' . CANNONICALROOTPATH.'index.php">Página principal</a></p>';
+	echo '<p><a href="' . CANNONICALROOTPATH.'admin/formSubmitCollection.php">Añadir colección</a></p>';
+	echo '<p><a href="' . CANNONICALROOTPATH.'admin/formUpdateCollection.php">Generar copias cromos</a></p>';
 	echo '<p><a href="' . CANNONICALROOTPATH.'dologout.php">Cerrar sesión</a></p>';
  ?>
  	<p>_________________________________________________________</p>

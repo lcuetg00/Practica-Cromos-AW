@@ -1,170 +1,163 @@
-/* Bordered form */
-form {
-  width: 39%;
-  border: 5px solid #000000;
-  align-items: center;
-  margin: 0 auto;
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+/* Global */
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
-.areaPersonal {
-  width: 12%;
-  height: 95%;
-  border: 5px solid #000000;
-  align-items: center;
-  margin: 15px 10px;
-
+html {
+	/* Fuente: https://www.gradientmagic.com/collection/popular/gradient/1587510852621 */
+	background-image: radial-gradient(circle at top right, rgb(36, 9, 119) 0%, rgb(36, 9, 119) 48%,rgb(72, 7, 149) 48%, rgb(72, 7, 149) 53%,rgb(109, 5, 178) 53%, rgb(109, 5, 178) 56%,rgb(145, 2, 208) 56%, rgb(145, 2, 208) 69%,rgb(181, 0, 237) 69%, rgb(181, 0, 237) 100%);
+	height: 100%;
+	width: 100%;
 }
 
-.containerPersonal{
-    width: 75%;
-    height: 28%;
-    margin: 0 auto;
+/* Contenedores */
+.content {
+	width: 90%;
+	border: 5px solid #000000;
+    border-radius: 25px;
+	background-color: #353840;
+	margin: 20px auto 40px auto;
+	padding: 20px;
+}
+.hContainer {
+    display: inline-block;
+    text-align: center;
+}
+.vContainer {
+	padding: auto;
+	margin: 0px;
+	display: flex;
+	flex-direction: column;
+}
+.vContainerCenteredContents {
+	padding: auto;
+	margin: 0px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
 }
 
-.containerPersonalSub{
-    width: 75%;
-    height: 19%;
-    margin: 25px 45px;
-
+/* Componentes */
+p, div, tr, td, h1, h2, h3, li, a, button {
+	font-family: "Roboto", sans-serif;
+	color: white;
 }
-
-.aperturePersonal{
-    width: 100%;
-    margin: 0 auto;
-
+h1 {
+	margin-bottom: 30px;
 }
-
-.aperturePersonalSub{
-    width: 80%;
-    margin: 0 auto;
-
+h2 {
+	margin-bottom: 12px;
 }
-
-/* Full-width inputs */
-input[type=text], input[type=password] {
-  width: 101%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+h3 {
+	margin-bottom: 8px;
 }
-body{
-  background-color: #262636;
-
+li, a, button {
+	font-weight: 500;
+	font-size: 18px;
+	text-decoration: none;
 }
-
-/* Set a style for all buttons */
+a.href {
+	color: aqua;
+}
+a.href:hover {
+	color: blue;
+}
 button {
   background-color: #00997a;
-  color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
+  border-radius: 25px;
   cursor: pointer;
-  width: 101%;
 }
-
-/* Add a hover effect for buttons */
 button:hover {
   opacity: 0.8;
 }
-
-/* Extra style for the cancel button (red) */
-.volverbtn {
-  width: auto;
-  padding: 10px 18px;
-  background-color: #ec4163;
+button.flashyButton {
+  background-color: crimson;
 }
-
-/* Center the avatar image inside this container */
-.imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
-  margin: 0 auto; 
-}
-
-/* Avatar image */
-img.avatar {
-  width: 30%;
-  margin: 0 auto;
-}
-
-/* Add padding to containers */
-.container {
-  padding: 16px;
-
-}
-
-/* Ha olvidado la contraseña */
-span.psw {
-  float: right;
-  padding-top: 16px;
-
-}
-span.greentxt {
-    float: right;
-    font-family: "Lucida Console", "Courier New", monospace;
-    color: #00997a;
-}
-
-span.greentxt2 {
-    float: left;
-    font-family: "Lucida Console", "Courier New", monospace;
-    font-size: 16px;
-    color: #00997a;
-}
-
-
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-    display: block;
-    float: none;
-  }
-  .volverbtn {
+table.fitContent {
+    table-layout: auto;
+    border-collapse: collapse;
     width: 100%;
-  }
 }
 
-label{
+/* Cabecera */
+header {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20px 5%;
+	background-color: #353840;
+}
+header.subHeader {
+	padding: 30px 10%;
+	background-color: #494b53;
+}
+.headerLinks {
+	list-style: none;
+}
+.headerLinks li {
+	display: inline-block;
+	padding: 0px 25px;
+}
+.headerLinks li a {
+	transition: all 0.3 ease 0s;
+}
+
+/* Pie */
+footer {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	text-align: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30px 10%;
+	background-color: #494b53;
+}
+
+/* Formularios */
+form.login, form.signup {
+	width: 40%;
+	align-items: center;
+	border: 5px solid #000000;
+	background-color: #353840;
+	margin: 20px auto 40px auto;
+	padding: 20px;
+}
+form h3 {
+	font-family: "Roboto", monospace;
     color: white;
+	margin: 5% auto;
 }
-
-div{
-    width: 94.5%;
-    align-items: center;
-    justify-content: center;
+form label {
+	font-family: "Roboto", monospace;
+    color: white;
+	margin: 10px 0 0 0;
 }
-
-span{
-    color: #8c8c8c;
+form button {
+	padding: 14px 20px;
+	margin: 50px auto 0 0;
 }
-
-c{
-  color: #8c8c8c;
-  font-family: "Lucida Console", "Courier New", monospace;
-  
+form button.flashyButton {
+	margin: 5px auto 0 0;
 }
-
-c.c1{
-    margin: 11px;
+form input[type=text], form input[type=password] {
+	width: 101%;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	box-sizing: border-box;
 }
-
-c.c2{
-    margin: 42px;
-}
-
-c.c3{
-    margin: -8px;
-}
-
-p{
-    font-family: "Lucida Console", "Courier New", monospace;
-    color: #00997a;
-    font-size: 14px;
-}
-
-p.b{
-    color: black;
+form img.avatar {
+	width: 30%;
+	margin: 0 auto;
 }

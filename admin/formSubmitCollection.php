@@ -25,7 +25,9 @@
 			$imagenes[$i] = file_get_contents($_FILES['cromoImg' . $i]['tmp_name']);
 		}
 
-		insertarColeccionAlbum($nombreColeccion, $nombres, $precios, $cantidades, $imagenes, $precioAlbum);
+		$db = connectToDatabase();
+		insertarColeccionAlbum($db, $nombreColeccion, $nombres, $precios, $cantidades, $imagenes, $precioAlbum);
+		closeConnection($db);
 		unset($_POST);
 		header("location: ./main.php?status=updateSuccess");
 		exit();

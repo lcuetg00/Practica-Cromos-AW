@@ -1,57 +1,54 @@
-﻿        <?php
-	        define("CANNONICALROOTPATH", "./");
-	        include "./sessionManagement.php";
+<?php
+	define("CANNONICALROOTPATH", "./");
+	include "./sessionManagement.php";
 
-	        if (isset($_SESSION["user"])) {
-		        header("location: ./index.php");
-		        exit();
-	        }
+	if (isset($_SESSION["user"])) {
+		header("location: ./index.php");
+		exit();
+	}
 
-	        include_once "./cromos_header.php";
-        ?>
+	include "./cromos_header.php";
+?>
 
-        <section class="login-form">
-            <form action="dologin.php" method="post">
-              <div class="imgcontainer">
-                <br><img src="img/avatar.png" alt="Avatar" class="avatar">
-                <br><br><label><c>INICIAR SESION</c></label><br><br>
-              </div>
+<form class="login" action="dologin.php" method="post">
+	<div class="vContainer">
+		<img src="img/avatar.png" alt="Avatar" class="avatar"></img>
+		<h3>INICIAR SESION</h3>
+	</div>
+	<div class="vContainer">
+		<label for="user">Nombre de usuario:</label>
+		<input type="text" placeholder="Introduce tu nombre de usuario" name="user" required></input>
 
-              <div class="container">
-                <label for="uname"><b>Nombre de usuario: </b></label>
-                <input type="text" placeholder="Introduce tu nombre de usuario" name="user" required>
-                <br><br>
+		<label for="password">Contraseña:</label>
+		<input type="password" placeholder="Introduce tu contraseña" name="password" required></input>
 
-                <label for="psw"><b>Contraseña: </b></label>
-                <input type="text" placeholder="Introduce tu contraseña" name="password" required>
-                <br><br>
+		<button type="submit" name ="submit">Iniciar Sesión</button>
+	</div>
+	<div class="vContainer">
+		<button type="button" class="flashyButton" onclick="history.back()">Volver</button>
+	</div>
+</form>
 
-                <button type="submit" name ="submit"> Iniciar Sesión </button>
-                <!-- <label><input type="checkbox" checked="checked" name="remember"> Recordarme </label> --> 
-              </div>
+<?php
+	include "./cromos_footer.php";
 
-              <div class="container">
-                <button type="button" class="volverbtn" onclick="goBack()"> Volver </button>
-                <script>
-                    function goBack() {
-                        window.history.back();
-                    }
-                </script>
-                <!-- <span class="psw">¿Has olvidado la <a href="#">contraseña</a>?</span> --> 
-              </div>
-              <?php
-		        if (isset($_GET["error"])) {
-			        switch ($_GET["error"]) {
-				        case "userPasswordInvalid";
-					        echo "<p class='p'>El usuario y/o la contraseña no existen en la base de datos</p>";
-				        break;
-			        }
-		        }
-	          ?>
-
-            </form>
-        </section>
-
-        <?php
-	        include_once "./cromos_footer.php"
-        ?>
+	if (isset($_GET["error"])) {
+		switch ($_GET["error"]) {
+			case "userNotSet";
+				echo '<script language="javascript">';
+				echo 'alert("El campo usuario está incompleto")';
+				echo '</script>';
+				break;
+			case "passwordNotSet";
+				echo '<script language="javascript">';
+				echo 'alert("El campo contraseña está incompleto")';
+				echo '</script>';
+				break;
+			case "userPasswordInvalid";
+				echo '<script language="javascript">';
+				echo 'alert("El usuario y/o la contraseña no existen en la base de datos")';
+				echo '</script>';
+				break;
+		}
+	}
+?>

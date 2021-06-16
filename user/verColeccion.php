@@ -2,7 +2,7 @@
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
 	include "../sqldatabase/conectarbd.php";
-	include_once "./../debugops.php";
+	//include_once "./../debugops.php";
 
 	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
@@ -10,39 +10,16 @@
 	}
 	include "../cromosuser_header.php";
 
-	if (isset($_POST['input'])) {
-		crearTablasAlbum($mysqli,$_SESSION["dbId"],$_POST["input"]);
-		addButtons();
-	} else {
-		mostrarAlbunesUsuario($mysqli,$_SESSION["dbId"]);
-	}
-?>
-
-
-
-<script>
-	function onClick() {
-		let iNum = document.getElementById("num");
-		document.getElementById(iNum.value).setAttribute("hidden", "");
-		iNum.value = (iNum.value + 1) % 3;
-		document.getElementById(iNum.value).removeAttribute("hidden");
-	}
-</script>
-
-<?php
-	include "../cromosuser_footer.php";
-
-	function addButtons() {
-		echo "<input type=number id=num readonly value=0></input>";
-		echo "<input type=button onclick=onClick() value=cambiar></input>";
+	function addButtons($numTablas) {
+		echo '<div class="hContainer">
+				<input type=button onclick=onClickPrevious() id=prev style="width:20px;" value="<"></input>
+				<input type=number style="width:40px;" numTablas="'.$numTablas.'" id=num readonly value=1></input>
+				<input type=button onclick=onClickNext() id=next style="width:20px;" value=">"></input>
+				</div>';
 	}
 	function mostrarAlbunesUsuario($mysqli,$idSocio) {
 	  $result = recogerAlbunesUsuario($mysqli,$idSocio);
-	  echo '<table id="tableAlbum" border="1">';
-	  echo "<tr>";
-	  echo "<td>Nombre</td>";
-	  echo "<td>Acceder Album</td>";
-	  echo "<tr>";
+	  echo '<table class="fitContent" id="tableAlbum" border="1">';
 	  while($rowitem = mysqli_fetch_array($result)) {
 	    //Esto hay que hacerlo porque poseealbum no tiene ni el nombre ni el id de la coleccion
 	    $buscarDatosAlbum = recogerAlbumById($mysqli,$rowitem['IdAlbum']);
@@ -50,11 +27,12 @@
 	    $idColeccionAlbum = $filaAlbum[COLUMNAIDCOLECCION];
 	    echo "<tr>";
 	    echo "<td>" . $filaAlbum[COLUMNANOMBRE] . "</td>";
+		echo "<td>" . recogerEstadoColeccion($mysqli, $filaAlbum[COLUMNAIDCOLECCION], $idSocio) . "</td>";
 	    echo "<td>";
 			echo "<form method=POST action=" . $_SERVER['PHP_SELF'] .">";
-			echo "<input hidden type=text name=input value=". $filaAlbum[COLUMNAIDCOLECCION] .">";
-			echo "<input type=hidden name= flag value=1 >";
-			echo "<input type=submit value=Resolver name=submit />";
+			echo "<input type=hidden name=input value=". $filaAlbum[COLUMNAIDCOLECCION] ."></input>";
+			echo "<input type=hidden name=flag value=1></input>";
+			echo "<input type=submit value=Acceder name=submit></input>";
 			echo "</form>";
 			echo "</td>";
 	    echo "</tr>";
@@ -72,7 +50,9 @@
 	  $result = recogerCromosUsuarioColeccion($mysqli,$idSocio,$idColeccion);
 	  $m=0;
 	  $rowitem = mysqli_fetch_array($result);
-	  for($i = 0; $rowitem != null; $i++){
+	  $i = 0;
+	  echo '<div style="margin: 10px auto 10px auto">';
+	  while ($m < $numCromosColeccion) {
 	    if($i==0) {
 	      echo '<table id="'. $i .'" border="1">';
 	    } else {
@@ -86,19 +66,73 @@
 	            $imagen= $datosCromo['Imagen'];
 	            echo"<td>";
 	              echo '<img width="150" height="210" src="data:image/jpg;base64,' . base64_encode( $imagen ) . '" />';
-	              echo '<p>Cantidad: '. $datosCromo['UnidadesDisponibles'] . '</p>';
+	              echo '<p>Cantidad: '. $rowitem['Cantidad'] . '</p>';
 	            echo"</td>";
 	            $rowitem = mysqli_fetch_array($result);
-	          } else {
+			} else if ($m < $numCromosColeccion) {
 	            echo"<td>";
 	              echo '<div style="padding:130px 75px"></div>';
 	            echo"</td>";
-	          }
+			} else {
+	            echo"<td>";
+	              echo '<div style="padding:130px 75px; background-color:black;"></div>';
+	            echo"</td>";
+			}
   			$m++;
 	      }
 	      echo "</tr>";
 	    }
 	    echo "</table>";
-	  }
+		$i++;
 	}
+	  echo '</div>';
+	  return $i;
+	}
+
+	echo '<div class="content"><div class="vContainerCenteredContents">';
+	echo '<h2>VER COLECCIÓN</h2>';
+	$mysqli = connectToDatabase();
+	if (isset($_POST['input'])) {
+		$numTablas = crearTablasAlbum($mysqli, $_SESSION["dbId"],$_POST["input"]);
+		if ($numTablas > 1) {
+			addButtons($numTablas);
+		}
+	} else {
+		mostrarAlbunesUsuario($mysqli, $_SESSION["dbId"]);
+	}
+	closeConnection($mysqli);
+	echo '</div></div>'
+?>
+
+<script>
+	var bPrev = document.getElementById("prev");
+	var iNum = document.getElementById("num");
+	var bNext = document.getElementById("next");
+	var numTablas = iNum.getAttribute("numTablas");
+	var currentTabla = 0;
+	bPrev.disabled = true;
+	function onClickPrevious() {
+		document.getElementById(currentTabla).setAttribute("hidden", "");
+		iNum.value--;
+		currentTabla--;
+		if (currentTabla == 0) {
+			bPrev.disabled = true;
+		}
+		bNext.disabled = false;
+		document.getElementById(currentTabla).removeAttribute("hidden");
+	}
+	function onClickNext() {
+		document.getElementById(currentTabla).setAttribute("hidden", "");
+		iNum.value++;
+		currentTabla++;
+		if (currentTabla == numTablas-1) {
+			bNext.disabled = true;
+		}
+		bPrev.disabled = false;
+		document.getElementById(currentTabla).removeAttribute("hidden");
+	}
+</script>
+
+<?php
+	include "../cromosuser_footer.php";
 ?>

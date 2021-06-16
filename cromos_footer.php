@@ -1,4 +1,7 @@
-		<p class="b">___________________________</p>
-		<p>Usuario Desconocido</p>
+<!--
+		<footer>
+			<p>Usuario Desconocido</p>
+		</footer>
+		-->
 	</body>
 </html>

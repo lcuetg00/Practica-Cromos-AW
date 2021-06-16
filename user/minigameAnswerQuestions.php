@@ -1,8 +1,9 @@
+<!-- Fuente preguntas y respuestas: https://psicologiaymente.com/cultura/preguntas-trivial -->
 <?php
 	define("CANNONICALROOTPATH", "./../");
 	include "../sessionManagement.php";
 	include "../sqldatabase/conectarbd.php";
-	include_once "./../debugops.php";
+	//include_once "./../debugops.php";
 
 	if (!isset($_SESSION["dbId"])) {
 		header("location: ../index.php");
@@ -19,13 +20,16 @@
 	include "./questionsGame/questions.php";
 	$question = getQuestionSetAnswer();
 	//echo $_SESSION["answer"];
-	echo '<h2>Responde correctamente</h2>
-    <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
-		<h3>Pregunta: '.$question.'</h3>
-        <input type="text" name="input"/>
-        <input type="hidden" name="flag" value="1"/>
-        <input type="submit" value="Contestar" name="submit"/>
-    </form>';
+	echo
+	'<div class="content">
+		<div class="vContainerCenteredContents">
+			<h3>Responde correctamente</h3>
+			    <form method="POST" action="'.$_SERVER['PHP_SELF'].'">
+					<h3>Pregunta: '.$question.'</h3>
+			        <input type="text" name="input"/>
+			        <input type="hidden" name="flag" value="1"/>
+			        <input type="submit" value="Contestar" name="submit"/>
+			    </form>';
 
 	if (isset($_POST['input'])) {
 		//echo $lastAnswer . "</br>";
@@ -51,15 +55,13 @@
 	} else {
 		$msg = "";
 	}
-?>
 
-    <div style='margin-bottom:5px'>
-        <?php echo $msg; ?>
-    </div>
-	<div style='margin-bottom:5px'>
-		Fuente preguntas: <a href="https://psicologiaymente.com/cultura/preguntas-trivial">Web psicologiaymente</a>
-	</div>
+	if (isset($msg) && $msg !== '') {
+		echo '<div style="margin-top:15px">'.$msg.'</div>';
+	}
+	echo '
+		</div>
+	</div>';
 
-<?php
 	include "../cromosuser_footer.php";
 ?>

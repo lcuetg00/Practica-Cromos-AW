@@ -1,75 +1,67 @@
-    <?php
-	    define("CANNONICALROOTPATH", "./");
-	    include "./sessionManagement.php";
+<?php
+    define("CANNONICALROOTPATH", "./");
+    include "./sessionManagement.php";
 
-	    if (isset($_SESSION["user"])) {
-		    header("location: ./index.php");
-		    exit();
-	    }
-	
-	    include_once "./cromos_header.php";
-    ?>
+    if (isset($_SESSION["user"])) {
+	    header("location: ./index.php");
+	    exit();
+    }
 
-    <section class="signup-form">
-        <div class="signup-form-form">
-            <form action="dosignup.php" method="post">
-              <div class="imgcontainer">
-                <br><img src="img/avatar.png" alt="Avatar" class="avatar">
-                <br><br><label><c> REGISTRARSE </c></label><br><br>
-              </div>
+    include "./cromos_header.php";
+?>
 
-              <div class="container">
-                <label for="uname"><b>Nombre de usuario: </b></label>
-                <input type="text" placeholder="Introduce tu nombre de usuario" name="user" required>
-                <br><br>
+<form class="signup" action="dosignup.php" method="post">
+	<div class="vContainer">
+		<img src="img/avatar.png" alt="Avatar" class="avatar"></img>
+		<h3>REGISTRO</h3>
+	</div>
+	<div class="vContainer">
+		<label for="user">Nombre de usuario:</label>
+		<input type="text" placeholder="Introduce tu nombre de usuario" name="user" required></input>
 
-                <label for="psw"><b>Contrase&ntilde;a: </b></label>
-                <input type="text" placeholder="Introduce tu contrase&ntilde;a" name="password" required>
-                <br><br>
+		<label for="password">Contrase&ntilde;a:</label>
+		<input type="text" placeholder="Introduce tu contrase&ntilde;a" name="password" required></input>
 
-                <label for="psw"><b>Vuelve a introducir la contrase&ntilde;a: </b></label>
-                <input type="text" placeholder="Vuelve a introducir la contrase&ntilde;a" name="passwordrep" required>
-                <br><br>
+		<label for="passwordrep">Vuelve a introducir la contrase&ntilde;a:</label>
+		<input type="text" placeholder="Vuelve a introducir la contrase&ntilde;a" name="passwordrep" required></input>
 
-                <button type="submit" name="submit"> Crear Cuenta </button>
-              </div>
+		<button type="submit" name="submit">Crear cuenta</button>
+	</div>
+	<div class="vContainer">
+		<button type="button" class="flashyButton" onclick="history.back()">Volver</button>
+	</div>
+</form>
 
-              <div class="container">
-                <button type="button" style="float: right;" class="volverbtn" onclick="goBack()"> Volver </button>
-				<script>
-                    function goBack() {
-                        window.history.back();
-                    }
-                </script>
-              </div>
-              <br><br><br>
-            </form>
-        </div>
-			<?php
-			if (isset($_GET["error"])) {
-				switch ($_GET["error"]) {
-					case "passwordDoesntMatch":
-						echo "<p>Las contrase&ntilde;as no coinciden</p>";
-						break;
-					case "userInvalid";
-						echo "<p>El campo usuario debe contener de 4 a 16 caracteres alfadecimales y debe empezar por una letra</p>";
-					break;
-					case "passwordInvalid";
-						echo "<p>El campo contrase&ntilde;a debe contener de 6 a 16 caracteres alfadecimales, incluídos \"! ? . -\"</p>";
-					break;
-					case "passwordUnsafe";
-						echo "<p>La contrase&ntilde;a introducida no es lo suficientemente segura</p>";
-					break;
-					case "userAlreadyExists";
-						echo "<p>El usuario introducido ya existe</p>";
-					break;
-					case "";
-						echo "<p></p>";
-					break;
-				}
-			}
-		 ?>
-    </section>
-    <?php
-	    include_once "cromos_footer.php"
-    ?> 
+<?php
+    include "cromos_footer.php";
+
+	if (isset($_GET["error"])) {
+		switch ($_GET["error"]) {
+			case "passwordDoesntMatch":
+				echo '<script language="javascript">';
+				echo 'alert("Las contrase&ntilde;as no coinciden")';
+				echo '</script>';
+				break;
+			case "userInvalid";
+				echo '<script language="javascript">';
+				echo 'alert("El campo usuario debe contener de 4 a 16 caracteres alfadecimales y debe empezar por una letra")';
+				echo '</script>';
+				break;
+			case "passwordInvalid";
+				echo '<script language="javascript">';
+				echo 'alert("El campo contrase&ntilde;a debe contener de 6 a 16 caracteres alfadecimales, incluï¿½dos \"! ? . -\"")';
+				echo '</script>';
+				break;
+			case "passwordUnsafe";
+				echo '<script language="javascript">';
+				echo 'alert("La contrase&ntilde;a introducida no es lo suficientemente segura")';
+				echo '</script>';
+				break;
+			case "userAlreadyExists";
+				echo '<script language="javascript">';
+				echo 'alert("El usuario introducido ya existe")';
+				echo '</script>';
+				break;
+		}
+	}
+?>
